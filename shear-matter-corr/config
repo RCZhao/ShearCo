@@ -1,11 +1,11 @@
 # foreground galaxy catalog file [string /mypath/myfile.filetype]
 # format should be [xpos   ypos  0   0   weight]
-input_lens_file     /vol/trillian2/raid11/sandra/GitHub/cat_lens.ascii
+input_lens_file     ./test/cat_lens.ascii
 # background galaxy catalog file [string /mypath/myfile.filetype]
 # format should be [xpos   ypos  shear1   shear2   weight]
-input_source_file   /vol/trillian2/raid11/sandra/GitHub/cat_source.ascii
+input_source_file   ./test/cat_source.ascii
 # output directory [string: /mypath/]
-output_data_dir     ./
+output_data_dir     ./test/
 # number of pixel, field size is N_pix*N_pix [int e.g., 4096]
 N_pix               4096
 # inner radius in units of 'input coordinates' [double e.g., 0.1 or 2]
