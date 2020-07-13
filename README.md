@@ -44,37 +44,87 @@ Testing the code:
 ## Configuration file
 The default is "config" has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
 
-COMPULSORY
-* input_lens_file     string   ./test/cat_lens.ascii   lens galaxy catalogue in format [xpos ypos 0 0 weight]
-* input_source_file   string   ./test/cat_source.ascii source galaxy catalogue in format [xpos ypos shear1 shear2 weight]
-* theta_in            double   0.01                    inner radius in input catalog units
-* theta_out           double   0.30                    inner radius in input catalog units
-* N_annuli            integer  10                      number of bins
-
-OPTIONAL
-* output_data_dir     string   ./                      output directory
-* N_pix               integer  4096                    number of pixel N_pix^2 that the FFT uses (limits the precision)
-* bin_type            string   log                     logarithmic or linear binning [lin, log]
-* bin_in_R            bool     false                   option to using comoving coord instead of angular units from catalog
-
-IF bin_in_R = true:
-* conv_R2theta        double   0.03                    since the conversion from R to theta is cosmology dependent, the factor must be specified here
+<table style="width:100%">
+  <tr>
+    <th>COMPULSORY</th>
+    <th> </th> 
+    <th> </th>
+  </tr>
+  <tr>
+    <td>input_lens_file</td>
+    <td>string</td> 
+    <td>./test/cat_lens.ascii</td>
+    <td>lens galaxy catalogue in format [xpos ypos 0 0 weight]</td>
+  </tr>
+  <tr>
+    <td>input_source_file</td>
+    <td>string</td> 
+    <td>./test/cat_source.ascii</td>
+    <td>source galaxy catalogue in format [xpos ypos shear1 shear2 weight]</td>
+  </tr>
+  <tr>
+    <td>theta_in</td>
+    <td>double</td> 
+    <td>0.01</td>
+    <td>inner radius in input catalog units</td>
+  </tr>
+  <tr>
+    <td>theta_out</td>
+    <td>double</td> 
+    <td>0.3</td>
+    <td>outer radius in input catalog units</td>
+  </tr>
+  <tr>
+    <td>N_annuli</td>
+    <td>integer</td> 
+    <td>10</td>
+    <td>number of bins</td>
+  </tr>
+</table>
 
 <table style="width:100%">
   <tr>
-    <th>Firstname</th>
-    <th>Lastname</th> 
-    <th>Age</th>
+    <th>OPTIONAL</th>
+    <th> </th> 
+    <th> </th>
   </tr>
   <tr>
-    <td>Jill</td>
-    <td>Smith</td> 
-    <td>50</td>
+    <td>output_data_dir</td>
+    <td>string</td> 
+    <td>./</td>
+    <td>output directory</td>
   </tr>
   <tr>
-    <td>Eve</td>
-    <td>Jackson</td> 
-    <td>94</td>
+    <td>N_pix</td>
+    <td>integer</td> 
+    <td>4096</td>
+    <td>number of pixel N_pix^2 that the FFT uses (limits the precision)</td>
+  </tr>
+  <tr>
+    <td>bin_type</td>
+    <td>string</td> 
+    <td>log</td>
+    <td>logarithmic or linear binning [lin, log]</td>
+  </tr>
+  <tr>
+    <td>bin_in_R</td>
+    <td>bool</td> 
+    <td>false</td>
+    <td>option to using comoving coord instead of angular units from catalog</td>
+  </tr>
+</table>
+
+<table style="width:100%">
+  <tr>
+    <th>IF bin_in_R = true:</th>
+    <th> </th> 
+    <th> </th>
+  </tr>
+  <tr>
+    <td>conv_R2theta</td>
+    <td>double</td> 
+    <td>0.03</td>
+    <td>since the conversion from R to theta is cosmology dependent, the factor must be specified here</td>
   </tr>
 </table>
 
