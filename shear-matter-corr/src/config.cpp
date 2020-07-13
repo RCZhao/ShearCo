@@ -40,17 +40,32 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
         else
         {
           conclusion = false ;
-          if (sassy_remark < 3)
+          if (sassy_remark < 2)
             std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
+          else if (sassy_remark < 4)
+            std::cout << "what about now? [yes, no]" << std::endl ;
           else if (sassy_remark < 5)
+            std::cout << "it's getting boring, so \ndo you want to create one now? [yes, no]" << std::endl ;
+          else if (sassy_remark < 6)
             std::cout << "dO yOu WaNt To CrEaTe OnE nOw? [yEs, nO]" << std::endl ;
+          else if (sassy_remark < 7)
+            std::cout << "last call? yes or no???" << std::endl ;
+          else if (sassy_remark < 8)
+            std::cout << "this time I really mean it? yes or no?" << std::endl ;
+          else if (sassy_remark < 9)
+            std::cout << "..." << std::endl ;
+          else if (sassy_remark < 10)
+            std::cout << "still here?" << std::endl ;
           else
-          {
-            std::cout << "FINE! I get it! You really need hobby..." << std::endl ;
-            exit(1) ;
-          }
+            std::cout << "someone here needs a new hobby and it's not me" << std::endl ;
           std::cin >> newconfig ;
           sassy_remark ++ ;
+
+          if (sassy_remark == 10)
+          {
+            std::cout << "welcome to the endless loop... muhahaha\n" << std::endl ;
+            sassy_remark = 0 ;
+          }
         }
       }
     }
