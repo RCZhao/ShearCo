@@ -46,9 +46,7 @@ The default is "config" has to contain the following entries. If you do not give
 
 <table style="width:100%">
   <tr>
-    <th>COMPULSORY</th>
-    <th> </th> 
-    <th> </th>
+    <th colspan="4">COMPULSORY</th>
   </tr>
   <tr>
     <td>input_lens_file</td>
@@ -84,7 +82,7 @@ The default is "config" has to contain the following entries. If you do not give
 
 <table style="width:100%">
   <tr>
-    <th>OPTIONAL</th>
+    <th colspan="4">OPTIONAL</th>
     <th> </th> 
     <th> </th>
   </tr>
@@ -116,7 +114,7 @@ The default is "config" has to contain the following entries. If you do not give
 
 <table style="width:100%">
   <tr>
-    <th>IF bin_in_R = true:</th>
+    <th colspan="4">IF bin_in_R = true:</th>
     <th> </th> 
     <th> </th>
   </tr>
