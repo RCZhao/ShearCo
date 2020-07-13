@@ -37,7 +37,7 @@ Input catalogs:
 
 Testing the code:
 * the folder `test` contains a lens and a source input catalog, the test config file and the test output file
-* run with `./bin/shearco -c test_config` and compare "tshear.ascii" and "test_tshear.ascii"
+* run with `./bin/shearco -c test/test_config` and compare "tshear.ascii" and "test_tshear.ascii"
 
 
 ## Configuration file
