@@ -41,7 +41,7 @@ Testing the code:
 
 
 ## Configuration file
-The default is "config" has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
+The default is "config". It has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
 
 <table style="width:100%">
   <tr>
