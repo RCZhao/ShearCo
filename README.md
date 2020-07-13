@@ -1,11 +1,10 @@
 # ShearCo
-Version 1.0 (07/2020) by Sandra Unruh
-
+Version 1.0 (07/2020) by Sandra Unruh<br>
 Second-order correlation functions with fast-Fourier transforms in C++
 
 ## Table of contents
 * [General info](#general-info)
-* [Install & run](#install-&-run)
+* [Install and run](#install-and-run)
 * [Configuration file](#configuration-file)
 * [Features](#features)
 * [Status](#status)
@@ -16,7 +15,7 @@ Second-order correlation functions with fast-Fourier transforms in C++
 _ShearCo_ is a C++-based code that calculates weak lensing two-point correlation functions efficiently. Currently, only shear-matter correlation functions (galaxy-galaxy lensing signals) an be computed which will be expanded in the near future. It is suitable for large data sets and independent of the survey footprint. This code estimates and/or mitigates weak lensing magnification effects. A detailed account is given in the [@PhD thesis](.) (not published yet) and an abridged version can be found in the appendix of [@Unruh2020](https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..96U/abstract).
 
 
-## Install & run
+## Install and run
 Dependencies:
 * standard C compiler
 * [@FFTW3](http://www.fftw.org)
@@ -83,8 +82,6 @@ The default is "config" has to contain the following entries. If you do not give
 <table style="width:100%">
   <tr>
     <th colspan="4">OPTIONAL</th>
-    <th> </th> 
-    <th> </th>
   </tr>
   <tr>
     <td>output_data_dir</td>
@@ -115,8 +112,6 @@ The default is "config" has to contain the following entries. If you do not give
 <table style="width:100%">
   <tr>
     <th colspan="4">IF bin_in_R = true:</th>
-    <th> </th> 
-    <th> </th>
   </tr>
   <tr>
     <td>conv_R2theta</td>
@@ -129,7 +124,7 @@ The default is "config" has to contain the following entries. If you do not give
 
 ## Features
 * calculates the galaxy-shear correlation functions (galaxy-galaxy lensing signal)
-* independent on the number of objects
+* independent of the number of objects
 * works with masks
 * works on any survey footprint
 * binning in angular or comoving coordinates
@@ -140,10 +135,11 @@ To-do list:
 * calculation of shear-shear correlations
 * different input formats like .bin, .fits
 * optimize to some simulations I already used (Millennium, SLICS)
+* go beyond flat sky approximation
 
 
 ## Status
-Project is: _in progress_ (motto is slowly but steady)
+Project is: _in progress_ (motto is slowly but steady) <br>
 Last Update: July 2020
 
 
