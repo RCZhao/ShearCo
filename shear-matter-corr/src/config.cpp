@@ -25,22 +25,32 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
     if (!cfile.good())
     {
       std::cerr << "\nWARNING: the specified configuration file " << config << " does not exist\ndo you want to create one now? [yes, no]" << std::endl ;
-      std::string noconfig ;
-      std::cin >> noconfig;
+      std::string newconfig ;
+      std::cin >> newconfig;
 
       bool conclusion = false ;
+      int sassy_remark = 0 ;
       while(!conclusion)
       {
         conclusion = true ;
-        if (noconfig == "yes" || noconfig == "Yes" || noconfig == "YES" )
+        if (newconfig == "y" || newconfig == "yes" || newconfig == "Yes" || newconfig == "YES" || newconfig == "yEs" )
           create_config_file(config) ;
-        else if (noconfig == "no" || noconfig == "No" || noconfig == "NO" )
+        else if (newconfig == "n" || newconfig == "no" || newconfig == "No" || newconfig == "NO" || newconfig == "nO" )
           exit(1) ;
         else
         {
           conclusion = false ;
-          std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
-          std::cin >> noconfig ;
+          if (sassy_remark < 3)
+            std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
+          else if (sassy_remark < 5)
+            std::cout << "dO yOu WaNt To CrEaTe OnE nOw? [yEs, nO]" << std::endl ;
+          else
+          {
+            std::cout << "FINE! I get it! You really need hobby..." << std::endl ;
+            exit(1) ;
+          }
+          std::cin >> newconfig ;
+          sassy_remark ++ ;
         }
       }
     }
