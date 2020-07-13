@@ -37,11 +37,11 @@ Input catalogs:
 
 Testing the code:
 * the folder `test` contains a lens and a source input catalog, the test config file and the test output file
-* run with `./bin/shearco -c test_config` and compare "tshear.ascii" and "test_tshear.ascii"
+* run with `./bin/shearco -c test/test_config` and compare "tshear.ascii" and "test_tshear.ascii"
 
 
 ## Configuration file
-The default is "config" has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
+The default is "config". It has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
 
 <table style="width:100%">
   <tr>
@@ -105,7 +105,7 @@ The default is "config" has to contain the following entries. If you do not give
     <td>bin_in_R</td>
     <td>bool</td> 
     <td>false</td>
-    <td>option to using comoving coord instead of angular units from catalog</td>
+    <td>option to use comoving coordinates instead of angular units from the catalog</td>
   </tr>
 </table>
 
@@ -130,8 +130,8 @@ The default is "config" has to contain the following entries. If you do not give
 * binning in angular or comoving coordinates
 
 To-do list:
-* magnification effects in galaxy-galaxy lensing (already coded, needs to to be made compatible with this version)
-* implement convergence as an alternative to shear
+* magnification effects in galaxy-galaxy lensing (coding complete)
+* implement convergence as an alternative to shear (coding complete)
 * calculation of shear-shear correlations
 * different input formats like .bin, .fits
 * optimize to some simulations I already used (Millennium, SLICS)
@@ -147,5 +147,5 @@ Last Update: July 2020
 I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider and Pierre Burger for valuable discussions. 
 
 ## Contact
-Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) - feel free to contact me!
+Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) -- feel free to contact me!
 I am grateful for all kinds of suggestion, criticism, bugs and encouragement as this project emerged from my PhD thesis and my experience is naturally limited.
