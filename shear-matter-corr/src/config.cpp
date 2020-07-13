@@ -9,18 +9,28 @@
 #include "config.hpp"
 
 //***// if a config file exists, read it
-void read_config_file(std::string& input_lens_file, std::string& input_source_file, std::string& output_data_dir, int& N_pix, double& theta_in, double& theta_out, int& N_annuli, std::string& bin_type, bool bin_in_R, double& conv_R2theta)
+void read_config_file(std::string& config, std::string& input_lens_file, std::string& input_source_file, std::string& output_data_dir, int& N_pix, double& theta_in, double& theta_out, int& N_annuli, std::string& bin_type, bool bin_in_R, double& conv_R2theta)
 {
   // check if a config file exists if not redirect to 'create_config_file()'
+  if (config == "config")
   {
-    std::ifstream cfile("config");
+    std::ifstream cfile(config);
     if (!cfile.good())
       create_config_file() ;
     cfile.close();
   }
+  else
+  {
+    std::ifstream cfile(config);
+    if (!cfile.good())
+    {
+      std::cerr << "\nERROR: the specified configuration file " << config << " does not exist" << std::endl ;
+      exit(1) ;
+    }
+  }
 
   // at this point it's ensured that the config exists and it can be read
-  std::ifstream cfile("config");
+  std::ifstream cfile(config);
   std::string cline;
 
   // loop through the lines and assign variables
@@ -75,20 +85,11 @@ void read_config_file(std::string& input_lens_file, std::string& input_source_fi
     config_cool = false ;
   }
   if (output_data_dir.empty())
-  {
-    std::cerr << "\nERROR: there is no output_data_dir :(" << std::endl ;
-    config_cool = false ;
-  }
+    output_data_dir = "./" ;
   if (bin_type.empty())
-  {
-    std::cerr << "\nERROR: there is no bin_type :(" << std::endl ;
-    config_cool = false ;
-  }
+    bin_type = "log" ;
   if (N_pix == -1)
-  {
-    std::cerr << "\nWARNING: N_pix is not specified, the default (N_pix=4096) is assumed" << std::endl ;
     N_pix = 4096 ;
-  }
   if (theta_in == -1)
   {
     std::cerr << "\nERROR: theta_in is not specified :(" << std::endl ;
@@ -105,7 +106,10 @@ void read_config_file(std::string& input_lens_file, std::string& input_source_fi
     config_cool = false ;
   }
   if (bin_in_R == true && conv_R2theta < 1e-3)
-    std::cerr << "\nWARNING: no explicit bollean value for bin_in_R is set, the default (bin_in_R=false) is assumed  :(" << std::endl ;
+  {
+    std::cerr << "\nWARNING: no explicit boolean value for bin_in_R is set, the default (bin_in_R=false) is assumed  :(" << std::endl ;
+    bin_in_R = false ;
+  }
 
   if (!config_cool)
     exit(1) ;
@@ -200,7 +204,7 @@ void create_config_file()
   cfile << "N_pix               " << N_pix << std::endl ;
   cfile << "# inner radius in units of 'input coordinates' [double e.g., 0.1 or 2]" << std::endl ;
   cfile << "theta_in            " << theta_in << std::endl ;
-  cfile << "# outer radius in units of 'output coordinates' [double e.g., 10 or 15.7]" << std::endl ;
+  cfile << "# outer radius in units of 'input coordinates' [double e.g., 10 or 15.7]" << std::endl ;
   cfile << "theta_out           " << theta_out << std::endl ;
   cfile << "# number of bins [int e.g., 17 or 30]" << std::endl ;
   cfile << "N_annuli            " << N_annuli << std::endl ;

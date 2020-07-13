@@ -18,7 +18,7 @@
 void create_config_file() ;
 
 //***// if a config file exists, read it
-void read_config_file(std::string& input_lens_file, std::string& input_source_file, std::string& output_data_dir, int& N_pix, double& theta_in, double& theta_out, int& N_annuli, std::string& bin_type, bool bin_in_R, double& conv_R2theta) ;
+void read_config_file(std::string& config, std::string& input_lens_file, std::string& input_source_file, std::string& output_data_dir, int& N_pix, double& theta_in, double& theta_out, int& N_annuli, std::string& bin_type, bool bin_in_R, double& conv_R2theta) ;
 
 
 #endif /* config_hpp */

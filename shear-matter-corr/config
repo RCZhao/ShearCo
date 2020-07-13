@@ -18,5 +18,5 @@ N_annuli            10
 bin_type            log
 # binning [bool: true, false]
 bin_in_R            false
-# conversion factor 'bin_in_R = true', units deg/Mpc [double e.g., 0.03116]
+# conversion factor 'bin_in_R = true', units [cat units]/Mpc [double e.g., 0.03116]
 conv_R2theta        0.03

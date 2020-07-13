@@ -52,22 +52,29 @@ int main(int argc, char * const argv[])
   double conv_R2theta = -1 ;
   int N_pix = -1, N_annuli = -1 ;
   bool bin_in_R = false ;
+  std::string config =  "config" ;
 
 
+  // optional different name for config file
   // toggle 'output2file' and 'shut_up' when running code
   // enable as './programm -q -o'
   int arg ;
   static struct option longopts[] = 
   {
-    {"mute_mode", no_argument, 0, 'q'} , //q like quiet
-    {"no_output", no_argument, 0, 'o'} , //o like output
+    {"config", required_argument, 0, 'c'} ,
+    {"mute_mode", no_argument, 0, 'q'} ,    //q like quiet
+    {"no_output", no_argument, 0, 'o'} ,    //o like output
     {0, 0, 0, 0}
   };
 
-  while ((arg = getopt_long(argc, argv, "qo", longopts, NULL)) != -1)
+  while ((arg = getopt_long(argc, argv, "c:qo", longopts, NULL)) != -1)
   {
     switch (arg)
     {
+      case 'c': /* --config */
+        config = optarg ;
+        break ;
+         
       case 'q': /* --mute_mode */
         C::shut_up = true ;
         break ;
@@ -78,7 +85,7 @@ int main(int argc, char * const argv[])
                 
       case '?':
       default:    /* invalid option */
-        std::cout << "./programm -q -o \n q: program is mute (incl error messages) \n o: toggle outputfile off \n treat yourself to a cookie" <<  std::endl ;
+        std::cout << "./programm -q -o -c config\n q: program is mute (incl error messages) \n o: toggle outputfile off\n c: name of your config file\n treat yourself to a cookie" <<  std::endl ;
         return(1);
     }
   }
@@ -86,7 +93,7 @@ int main(int argc, char * const argv[])
   if (!C::shut_up)
     sayhello() ;
 
-  read_config_file(input_lens_file, input_source_file, output_data_dir, N_pix, theta_in, theta_out, N_annuli, bin_type, bin_in_R, conv_R2theta) ;
+  read_config_file(config, input_lens_file, input_source_file, output_data_dir, N_pix, theta_in, theta_out, N_annuli, bin_type, bin_in_R, conv_R2theta) ;
 
   if (!C::shut_up)
       std::cout << "finished configuring\nsetting-up annuli\r" << std::flush ;
