@@ -16,7 +16,7 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
   {
     std::ifstream cfile(config);
     if (!cfile.good())
-      create_config_file() ;
+      create_config_file(config) ;
     cfile.close();
   }
   else
@@ -24,8 +24,25 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
     std::ifstream cfile(config);
     if (!cfile.good())
     {
-      std::cerr << "\nERROR: the specified configuration file " << config << " does not exist" << std::endl ;
-      exit(1) ;
+      std::cerr << "\nWARNING: the specified configuration file " << config << " does not exist\ndo you want to create one now? [yes, no]" << std::endl ;
+      std::string noconfig ;
+      std::cin >> noconfig;
+
+      bool conclusion = false ;
+      while(!conclusion)
+      {
+        conclusion = true ;
+        if (noconfig == "yes" || noconfig == "Yes" || noconfig == "YES" )
+          create_config_file(config) ;
+        else if (noconfig == "no" || noconfig == "No" || noconfig == "NO" )
+          exit(1) ;
+        else
+        {
+          conclusion = false ;
+          std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
+          std::cin >> noconfig ;
+        }
+      }
     }
   }
 
@@ -133,7 +150,7 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
 
 
 //***// if no config file exists yet, create one (dialogue style)
-void create_config_file()
+void create_config_file(std::string& config)
 {
   // initialize the config input variables
   std::string input_lens_file, input_source_file, output_data_dir, bin_type ;
@@ -142,7 +159,7 @@ void create_config_file()
   bool bin_in_R ;
   
   // open a new file called 'config'
-  std::ofstream cfile("config");
+  std::ofstream cfile(config);
 
   // onto the dialogue
   std::cout << "\nHello there, seems you lack a config file, so let's make one." << std::endl;
