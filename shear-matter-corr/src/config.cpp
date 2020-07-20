@@ -14,61 +14,42 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
   // check if a config file exists if not redirect to 'create_config_file()'
   if (config == "config")
   {
-    std::ifstream cfile(config);
+    std::ifstream cfile(config) ;
     if (!cfile.good())
       create_config_file(config) ;
-    cfile.close();
+    cfile.close() ;
   }
   else
   {
-    std::ifstream cfile(config);
+    std::ifstream cfile(config) ;
     if (!cfile.good())
     {
       std::cerr << "\nWARNING: the specified configuration file " << config << " does not exist\ndo you want to create one now? [yes, no]" << std::endl ;
+
       std::string newconfig ;
-      std::cin >> newconfig;
+      std::cin >> newconfig ;
 
       bool conclusion = false ;
-      int sassy_remark = 0 ;
+      int insuspicious_counter = 0 ;
       while(!conclusion)
-      {
-        conclusion = true ;
-        if (newconfig == "y" || newconfig == "yes" || newconfig == "Yes" || newconfig == "YES" || newconfig == "yEs" )
-          create_config_file(config) ;
-        else if (newconfig == "n" || newconfig == "no" || newconfig == "No" || newconfig == "NO" || newconfig == "nO" )
-          exit(1) ;
-        else
-        {
-          conclusion = false ;
-          if (sassy_remark < 2)
-            std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
-          else if (sassy_remark < 4)
-            std::cout << "what about now? [yes, no]" << std::endl ;
-          else if (sassy_remark < 5)
-            std::cout << "it's getting boring, so \ndo you want to create one now? [yes, no]" << std::endl ;
-          else if (sassy_remark < 6)
-            std::cout << "dO yOu WaNt To CrEaTe OnE nOw? [yEs, nO]" << std::endl ;
-          else if (sassy_remark < 7)
-            std::cout << "last call? yes or no???" << std::endl ;
-          else if (sassy_remark < 8)
-            std::cout << "this time I really mean it? yes or no?" << std::endl ;
-          else if (sassy_remark < 9)
-            std::cout << "..." << std::endl ;
-          else if (sassy_remark < 10)
-            std::cout << "still here?" << std::endl ;
-          else
-            std::cout << "someone here needs a new hobby and it's not me" << std::endl ;
-          std::cin >> newconfig ;
-          sassy_remark ++ ;
-
-          if (sassy_remark == 10)
-          {
-            std::cout << "welcome to the endless loop... muhahaha\n" << std::endl ;
-            sassy_remark = 0 ;
-          }
-        }
-      }
+        conclusion = yes_or_no(conclusion, insuspicious_counter, newconfig, config) ;
     }
+
+  
+    if (cfile.peek() == std::ifstream::traits_type::eof())
+    {
+      std::cerr << "\nWARNING: the specified configuration file " << config << " is empty\ndo you want to create one now? [yes, no]" << std::endl ;
+
+      std::string newconfig ;
+      std::cin >> newconfig ;
+
+      bool conclusion = false ;
+      int insuspicious_counter = 0 ;
+      while(!conclusion)
+        conclusion = yes_or_no(conclusion, insuspicious_counter, newconfig, config) ;
+    }  
+
+    cfile.close() ;
   }
 
   // at this point it's ensured that the config exists and it can be read
@@ -148,10 +129,7 @@ void read_config_file(std::string& config, std::string& input_lens_file, std::st
     config_cool = false ;
   }
   if (bin_in_R == true && conv_R2theta < 1e-3)
-  {
-    std::cerr << "\nWARNING: no explicit boolean value for bin_in_R is set, the default (bin_in_R=false) is assumed  :(" << std::endl ;
     bin_in_R = false ;
-  }
 
   if (!config_cool)
     exit(1) ;
@@ -235,10 +213,10 @@ void create_config_file(std::string& config)
       
   // write config file
   cfile << "# foreground galaxy catalog file [string /mypath/myfile.filetype]" << std::endl ;
-  cfile << "# format should be [xpos   ypos  0   0   weight   0]" << std::endl ;
+  cfile << "# format should be [xpos   ypos  0   0   weight]" << std::endl ;
   cfile << "input_lens_file     " << input_lens_file << std::endl ;
   cfile << "# background galaxy catalog file [string /mypath/myfile.filetype]" << std::endl ;
-  cfile << "# format should be [xpos   ypos  shear1   shear2   weight1   weight2]" << std::endl ;
+  cfile << "# format should be [xpos   ypos  shear1   shear2   weight]" << std::endl ;
   cfile << "input_source_file   " << input_source_file << std::endl ;
   cfile << "# output directory [string: /mypath/]" << std::endl ;
   cfile << "output_data_dir     " << output_data_dir << std::endl ;
@@ -265,4 +243,46 @@ void create_config_file(std::string& config)
 
   //close file, happy ending
   cfile.close();
+}
+
+bool yes_or_no (bool conclusion, int& sassy_remark, std::string& newconfig, std::string& config)
+{
+  conclusion = true ;
+
+  if (newconfig == "y" || newconfig == "yes" || newconfig == "Yes" || newconfig == "YES" || newconfig == "yEs" )
+    create_config_file(config) ;
+  else if (newconfig == "n" || newconfig == "no" || newconfig == "No" || newconfig == "NO" || newconfig == "nO" )
+    exit(1) ;
+  else
+  {
+    conclusion = false ;
+    if (sassy_remark < 2)
+      std::cout << "I can do this all day\ndo you want to create one now? [yes, no]" << std::endl ;
+    else if (sassy_remark < 4)
+      std::cout << "what about now? [yes, no]" << std::endl ;
+    else if (sassy_remark < 5)
+      std::cout << "it's getting boring, so \ndo you want to create one now? [yes, no]" << std::endl ;
+    else if (sassy_remark < 6)
+      std::cout << "dO yOu WaNt To CrEaTe OnE nOw? [yEs, nO]" << std::endl ;
+    else if (sassy_remark < 7)
+      std::cout << "last call? yes or no???" << std::endl ;
+    else if (sassy_remark < 8)
+      std::cout << "this time I really mean it! yes or no?" << std::endl ;
+    else if (sassy_remark < 9)
+      std::cout << "..." << std::endl ;
+    else if (sassy_remark < 10)
+      std::cout << "still here?" << std::endl ;
+    else
+      std::cout << "someone here needs a new hobby and it's not me" << std::endl ;
+    std::cin >> newconfig ;
+    sassy_remark ++ ;
+
+    if (sassy_remark == 11)
+    {
+      std::cout << "\nwelcome to the endless loop... muhahaha\n" << std::endl ;
+      sassy_remark = 0 ;
+    }
+  }
+
+  return conclusion ;
 }

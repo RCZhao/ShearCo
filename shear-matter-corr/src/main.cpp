@@ -187,10 +187,10 @@ int main(int argc, char * const argv[])
   if(C::output2file)
   {
     if (!C::shut_up)
-    std::cout << "write output\r" << std::flush;
+      std::cout << "write output\r" << std::flush;
     write_file_for_GammaR(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli, output_data_dir) ;
     if (!C::shut_up)
-    std::cout << "wrote output\n" << std::endl ;
+      std::cout << "wrote output\n" << std::endl ;
   }
   // or print result in terminal
   else

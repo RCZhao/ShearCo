@@ -20,7 +20,7 @@ void write_file_for_GammaR(const std::vector<tmean_type>& theta, const std::vect
 
   // create header
   OutputFile << "## num of lenses\t" << numlens << "\t, num of sources\t" << numsource <<  "\n"  ;
-  OutputFile << "# radius\t\tgammat\t\t\tgammax\t\t\tgammatlss\t\tgammaxlss\n" ;
+  OutputFile << "# radius\tgammat\t\t\tgammax\t\t\tgammatlss\t\tgammaxlss\n" ;
 
   // for each annulus calculate radius of annulus from lens and write plus correspondung gamma(radius) value into file
   for(int ann = 0; ann < N_annuli ; ann++)
@@ -47,7 +47,7 @@ void write_empty_output_file(const std::vector<tmean_type> theta, const int N_an
 
   // create header
   OutputFile << "## num of lenses \t-1\t, num of sources\t-1\n"  ;
-  OutputFile << "# radius\t\tgammat\t\t\tgammax\t\tgammatlss\t\tgammaxlss\n" ;
+  OutputFile << "# radius\tgammat\t\t\tgammax\t\tgammatlss\t\tgammaxlss\n" ;
 
   // write empty file
   for(int ann = 0; ann < N_annuli ; ann++)
