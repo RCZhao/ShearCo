@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <fstream>
-// #include <malloc.h>
+#include <vector>
 
 #include "structdefs.hpp"
 

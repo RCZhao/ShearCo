@@ -73,13 +73,13 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
     // catches files that have more lines than the given number of galaxies
     if (idx == number_of_galaxies)
     {
-      if (!C::shut_up)
-        std::cerr << "\nWARNING: apparantly the number of objects (lines) in the code is larger than the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this should not cause a problem, but the routine will take considerably longer ;) \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
-
-      // count the residual lines
+      // adds the residual objects
       while (std::getline(file, str))
         number_of_galaxies++ ;
-      number_of_galaxies ++ ;
+      number_of_galaxies++ ;
+
+      if (!C::shut_up)
+        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
 
       // jump back to line one
       file.clear() ;
@@ -88,7 +88,7 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
       // jump back to the next line to read
       int goback = 0 ;
       while (std::getline(file, str) && goback < idx)
-        continue ;
+      	goback++ ;
 
       // reallocate memory
       xpos   = (double *)realloc(xpos  , number_of_galaxies *sizeof(double)) ;
@@ -113,13 +113,16 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
   }
 
   // give warning if the indicated number of lenses is not the same as objects in file
-  if (number_of_galaxies > idx+1 && !C::shut_up)
+  if (number_of_galaxies > idx && !C::shut_up)
   {
-    std::cerr << "\nWARNING: apparantly the number of objects (lines) " << idx+1 << " in the code is smaller than the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this does not cause a problem, but it can potentially cause memory problems  \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+    if (!C::shut_up)
+        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
 
-    xpos   = (double *)calloc(idx, sizeof(double)) ;
-    ypos   = (double *)calloc(idx, sizeof(double)) ;
-    weight = (double *)calloc(idx, sizeof(double)) ;
+    number_of_galaxies = idx ;
+
+    xpos   = (double *)realloc(xpos  , number_of_galaxies *sizeof(double)) ;
+    ypos   = (double *)realloc(ypos  , number_of_galaxies *sizeof(double)) ;
+    weight = (double *)realloc(weight, number_of_galaxies *sizeof(double)) ;
   }
 
   // happy end
@@ -194,6 +197,36 @@ void read_source_file(double *&xpos, double *&ypos, double *&shear1, double *&sh
   int idx = 0 ;
   while (std::getline(file, str))
   {
+    // catches files that have more lines than the given number of galaxies
+    if (idx == number_of_galaxies)
+    {
+      // adds the residual objects
+      while (std::getline(file, str))
+        number_of_galaxies++ ;
+      number_of_galaxies++ ;
+
+      if (!C::shut_up)
+        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_source_file< in >readfile.cpp<" << std::endl ;
+
+      // jump back to line one
+      file.clear() ;
+      file.seekg(0, std::ios::beg) ;
+
+      // jump back to the next line to read
+      int goback = 0 ;
+      while (std::getline(file, str) && goback < idx)
+      	goback++ ;
+
+      // reallocate memory
+      xpos   = (double *)realloc(xpos  , number_of_galaxies *sizeof(double)) ;
+      ypos   = (double *)realloc(ypos  , number_of_galaxies *sizeof(double)) ;
+      shear1 = (double *)realloc(shear1, number_of_galaxies *sizeof(double)) ;
+      shear2 = (double *)realloc(shear2, number_of_galaxies *sizeof(double)) ;
+      weight = (double *)realloc(weight, number_of_galaxies *sizeof(double)) ;
+
+      continue ;
+    }
+
     std::istringstream iss(str);
     iss >> x >> y >> s1 >> s2 >> w ;
 
@@ -210,9 +243,20 @@ void read_source_file(double *&xpos, double *&ypos, double *&shear1, double *&sh
     idx++ ;
   }
 
-  // give warning if the indicated number of sources is not the same as objects in file
-  if (number_of_galaxies > idx+1 && !C::shut_up)
-    std::cerr << "\nWARNING: apparantly the number of objects (lines) " << idx+1 << " in the code is inconsistent with the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this should not cause a problem, but I can't guarantee ;) \nfunction >read_source_file< in >readfile.cpp<" << std::endl ;
+  // give warning if the indicated number of lenses is not the same as objects in file
+  if (number_of_galaxies > idx && !C::shut_up)
+  {
+    if (!C::shut_up)
+        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_lsource_file< in >readfile.cpp<" << std::endl ;
+
+    number_of_galaxies = idx ;
+
+    xpos   = (double *)realloc(xpos  , number_of_galaxies *sizeof(double)) ;
+    ypos   = (double *)realloc(ypos  , number_of_galaxies *sizeof(double)) ;
+    shear1 = (double *)realloc(shear1, number_of_galaxies *sizeof(double)) ;
+    shear2 = (double *)realloc(shear2, number_of_galaxies *sizeof(double)) ;
+    weight = (double *)realloc(weight, number_of_galaxies *sizeof(double)) ;
+  }
 
   // happy end
   file.close() ;
