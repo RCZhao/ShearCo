@@ -75,12 +75,6 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
   }
 
 
-std::cout << "\n" << number_of_sourceobjects << std::endl;
-  for (int i = 0; i < number_of_sourceobjects; ++i)
-    std::cout << xpos_source[i] << "   " << ypos_source[i] << "   " << weight_source[i] << std::endl ;
-exit(1);
-
-
   // *** //
   // calculate size of the field in 'input_coord_units'
   // *** // 
