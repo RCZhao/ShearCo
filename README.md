@@ -147,5 +147,5 @@ Last Update: July 2020
 I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider and Pierre Burger for valuable discussions. 
 
 ## Contact
-Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) -- feel free to contact me!
+Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) - feel free to contact me!
 I am grateful for all kinds of suggestion, criticism, bugs and encouragement as this project emerged from my PhD thesis and my experience is naturally limited.

@@ -70,6 +70,34 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
   int idx = 0 ;
   while (std::getline(file, str))
   {
+    // catches files that have more lines than the given number of galaxies
+    if (idx == number_of_galaxies)
+    {
+      if (!C::shut_up)
+        std::cerr << "\nWARNING: apparantly the number of objects (lines) in the code is larger than the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this should not cause a problem, but the routine will take considerably longer ;) \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+
+      // count the residual lines
+      while (std::getline(file, str))
+        number_of_galaxies++ ;
+      number_of_galaxies ++ ;
+
+      // jump back to line one
+      file.clear() ;
+      file.seekg(0, std::ios::beg) ;
+
+      // jump back to the next line to read
+      int goback = 0 ;
+      while (std::getline(file, str) && goback < idx)
+        continue ;
+
+      // reallocate memory
+      xpos   = (double *)realloc(xpos  , number_of_galaxies *sizeof(double)) ;
+      ypos   = (double *)realloc(ypos  , number_of_galaxies *sizeof(double)) ;
+      weight = (double *)realloc(weight, number_of_galaxies *sizeof(double)) ;
+
+      continue ;
+    }
+
     std::istringstream iss(str);
     iss >> x >> y >> skip >> skip >> w ;
 
@@ -86,7 +114,13 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
 
   // give warning if the indicated number of lenses is not the same as objects in file
   if (number_of_galaxies > idx+1 && !C::shut_up)
-    std::cerr << "\nWARNING: apparantly the number of objects (lines) " << idx+1 << " in the code is inconsistent with the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this should not cause a problem, but I won't guarantee ;) \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+  {
+    std::cerr << "\nWARNING: apparantly the number of objects (lines) " << idx+1 << " in the code is smaller than the given number of galaxies " << number_of_galaxies << " in the file" << input_file << ", this does not cause a problem, but it can potentially cause memory problems  \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+
+    xpos   = (double *)calloc(idx, sizeof(double)) ;
+    ypos   = (double *)calloc(idx, sizeof(double)) ;
+    weight = (double *)calloc(idx, sizeof(double)) ;
+  }
 
   // happy end
   file.close() ;
