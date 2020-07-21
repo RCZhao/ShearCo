@@ -144,7 +144,7 @@ Last Update: July 2020
 
 
 ## Acknowledgements
-I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider and Pierre Burger for valuable discussions. 
+I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider, Pierre Burger and Rongchuan Zhao for valuable discussions. 
 
 ## Contact
 Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) - feel free to contact me!
