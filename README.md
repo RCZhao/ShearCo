@@ -36,6 +36,7 @@ Input catalogs:
 * comment lines are allowed with the usual specifiers [#, %, /, //, !]
 
 Output file:
+* (header) weighted number of lenses and sources
 * (1) linear mean radius in a bin
 * (2) logarithmic mean radius in a bin
 * (3) tangential shear
