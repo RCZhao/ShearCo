@@ -9,7 +9,7 @@
 #include "galassign.hpp"
 
 //***// assigns positions from lens galaxies and shear from source galaxies to the pixel grid
-void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_density, std::vector<std::complex<double>>& gamma12, double& number_of_lenses, double& number_of_sources, double& field_size, const int N_pix, const std::string& input_lens_file, const std::string& input_source_file, const std::vector<tmean_type> theta, const int N_annuli, const std::string output_data_dir)
+void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_density, std::vector<std::complex<double>>& gamma12, double& number_of_lenses, double& number_of_sources, double& field_size, const int N_pix, const std::string& input_lens_file, const std::string& input_source_file, const std::vector<tmean_type> theta, const int N_annuli, const std::string& units_output, const std::string output_data_dir)
 {
   for (int pix = 0 ; pix < N_pix*N_pix ; ++pix)
   {
@@ -38,10 +38,7 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
   {
     if(!C::shut_up)
       std::cerr << "\nWARNING: no lenses have been found in the file : " << input_lens_file << "\nfunction >gals2pos< in >galassign.cpp<" << std::endl;
-    if (C::output2file)
-      write_empty_output_file(theta, N_annuli, output_data_dir) ;
-    else
-      print_empty_result(theta, N_annuli) ;
+    write_empty_output_file(theta, N_annuli, units_output, output_data_dir) ;
     exit(1) ;
   }
 
@@ -67,10 +64,7 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
   {
     if(!C::shut_up)
       std::cerr << "\nWARNING: no sources have been found in the file : " << input_source_file << "\nfunction >gals2pos< in >galassign.cpp<" << std::endl;
-    if (C::output2file)
-      write_empty_output_file(theta, N_annuli, output_data_dir) ;
-    else
-      print_empty_result(theta, N_annuli) ;
+    write_empty_output_file(theta, N_annuli, units_output, output_data_dir) ;
     exit(1) ;
   }
 
@@ -203,10 +197,7 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
   {
     if(!C::shut_up)
       std::cerr << "\nWARNING: the weighted number of lenses found in file : " << input_lens_file << " is zero \nfunction >gals2pos< in >galassign.cpp<" << std::endl;
-    if (C::output2file)
-      write_empty_output_file(theta, N_annuli, output_data_dir) ;
-    else
-      print_empty_result(theta, N_annuli) ;
+    write_empty_output_file(theta, N_annuli, units_output, output_data_dir) ;
     exit(1) ;
   }
 
@@ -215,10 +206,7 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
   {
     if(!C::shut_up)
       std::cerr << "\nWARNING: the weighted number of sources found in file : " << input_source_file << " is zero \nfunction >gals2pos< in >galassign.cpp<" << std::endl;
-    if (C::output2file)
-      write_empty_output_file(theta, N_annuli, output_data_dir) ;
-    else
-      print_empty_result(theta, N_annuli) ;
+    write_empty_output_file(theta, N_annuli, units_output, output_data_dir) ;
     exit(1) ;
   }
 

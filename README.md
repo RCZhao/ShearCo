@@ -1,5 +1,5 @@
 # ShearCo
-Version 1.0 (07/2020) by Sandra Unruh<br>
+Version 1.1 (07/2020) by Sandra Unruh<br>
 Second-order correlation functions with fast-Fourier transforms in C++
 
 ## Table of contents
@@ -12,7 +12,7 @@ Second-order correlation functions with fast-Fourier transforms in C++
 * [Contact](#contact)
 
 ## General info
-_ShearCo_ is a C++-based code that calculates weak lensing two-point correlation functions efficiently. Currently, only shear-matter correlation functions (galaxy-galaxy lensing signals) an be computed which will be expanded in the near future. It is suitable for large data sets and independent of the survey footprint. This code estimates and/or mitigates weak lensing magnification effects. A detailed account is given in the [@PhD thesis](.) (not published yet) and an abridged version can be found in the appendix of [@Unruh2020](https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..96U/abstract).
+_ShearCo_ is a C++-based code that calculates weak lensing two-point correlation functions efficiently. Currently, only shear-matter correlation functions (galaxy-galaxy lensing signals) can be computed which will be expanded in the near future. It is suitable for large data sets and independent of the survey footprint. This code estimates and/or mitigates weak lensing magnification effects. A detailed account is given in the [@PhD thesis](.) (not published yet) and an abridged version can be found in the appendix of [@Unruh2020](https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..96U/abstract).
 
 
 ## Install and run
@@ -41,11 +41,17 @@ Testing the code:
 
 
 ## Configuration file
-The default is "config". It has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
+The default file is "config". It has to contain the following entries. If you do not give a config file, the terminal will display a dialogue to build one. You can specify a config file using the `-c` option.
 
 <table style="width:100%">
   <tr>
     <th colspan="4">COMPULSORY</th>
+  </tr>
+  <tr>
+    <td>variable</td>
+    <td>type</td> 
+    <td>example</td>
+    <td>description</td>
   </tr>
   <tr>
     <td>input_lens_file</td>
@@ -62,13 +68,13 @@ The default is "config". It has to contain the following entries. If you do not 
   <tr>
     <td>theta_in</td>
     <td>double</td> 
-    <td>0.01</td>
+    <td>0.6</td>
     <td>inner radius in input catalog units</td>
   </tr>
   <tr>
     <td>theta_out</td>
     <td>double</td> 
-    <td>0.3</td>
+    <td>17</td>
     <td>outer radius in input catalog units</td>
   </tr>
   <tr>
@@ -82,6 +88,12 @@ The default is "config". It has to contain the following entries. If you do not 
 <table style="width:100%">
   <tr>
     <th colspan="4">OPTIONAL</th>
+  </tr>
+  <tr>
+    <td>variable</td>
+    <td>type</td> 
+    <td>default</td>
+    <td>description</td>
   </tr>
   <tr>
     <td>output_data_dir</td>
@@ -102,10 +114,16 @@ The default is "config". It has to contain the following entries. If you do not 
     <td>logarithmic or linear binning [lin, log]</td>
   </tr>
   <tr>
-    <td>bin_in_R</td>
-    <td>bool</td> 
-    <td>false</td>
-    <td>option to use comoving coordinates instead of angular units from the catalog</td>
+    <td>units_input</td>
+    <td>string</td> 
+    <td>?</td>
+    <td>units of xpos/ypos in the input catalog [arcsec, arcmin, deg, rad, Mpc, kpc, ?]</td>
+  </tr>
+  <tr>
+    <td>units_output</td>
+    <td>string</td> 
+    <td>?</td>
+    <td>units for bins of the output [arcsec, arcmin, deg, rad, Mpc, kpc, ?]</td>
   </tr>
 </table>
 
@@ -144,8 +162,8 @@ Last Update: July 2020
 
 
 ## Acknowledgements
-I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider and Pierre Burger for valuable discussions. 
+I thank Sven Heydenreich for thoroughly testing the code (aka bug hunting), Peter Schneider, Pierre Burger and Rongchuan Zhao for valuable discussions. 
 
 ## Contact
-Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) - feel free to contact me!
+Created by [@SandraUnruh](sandra.unruh@uni-bonn.de) -- feel free to contact me!
 I am grateful for all kinds of suggestion, criticism, bugs and encouragement as this project emerged from my PhD thesis and my experience is naturally limited.

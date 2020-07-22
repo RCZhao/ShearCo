@@ -56,7 +56,7 @@ std::vector<double> setup_annuli(std::vector<double>& annuli_radius, const doubl
   else
   {
     if (!C::shut_up)
-      std::cerr << "\nERROR: the 'bin_type' is neither 'lin' nor 'log'\n function >setup_annuli< in >map_and_annuli.cpp<" << std::endl ;
+      std::cerr << "\nERROR: the 'bin_type' " << bin_type << " is neither 'lin' nor 'log'\n function >setup_annuli< in >map_and_annuli.cpp<" << std::endl ;
     exit(1) ;
   }
   
@@ -66,20 +66,84 @@ std::vector<double> setup_annuli(std::vector<double>& annuli_radius, const doubl
 
 
 
-//***// calculate the middle of an annulus [(inner+outer)/2]
-std::vector<tmean_type> calc_thetamean(std::vector<tmean_type>& thetamean, const std::vector<double>& annuli_radius, const int N_annuli, const bool bin_in_R, const double conv_R2theta)
+//***// calculate the middle of an annulus [(inner+outer)/2] + unit conversion
+std::vector<tmean_type> calc_thetamean(std::vector<tmean_type>& thetamean, const std::vector<double>& annuli_radius, const int N_annuli)
 {
+  // get linear and logarithmic mean
   for (int val = 0; val < N_annuli; ++val)
   {
     thetamean[val].mean[0] = .5*(annuli_radius[val] + annuli_radius[val+1]) ;
     thetamean[val].mean[1] = pow(10., .5*log10(annuli_radius[val]*annuli_radius[val+1])) ;
-
-    if (bin_in_R == true)
-      thetamean[val].mean[0] /= conv_R2theta ;
   }
 
   // happy end
   return thetamean ;
+}
+
+
+
+//***// convert units_input to units_output
+double unit_conv(double toconv, const std::string& units_input, const std::string& units_output, const bool bin_in_R, const double conv_R2theta)
+{
+  // nothing to do here
+  if (units_output == units_input)
+    return toconv ;
+
+  // angular unit conversions
+  if (units_output == "deg")
+  {
+    if (units_input == "arcmin")
+      return toconv/60. ;
+    if (units_input == "arcsec")
+      return toconv/60./60. ;
+    if (units_input == "rad")
+      return toconv/M_PI*180. ;
+  }
+  if (units_output == "arcmin")
+  {
+    if (units_input == "deg")
+      return toconv*60. ;
+    if (units_input == "arcsec")
+      return toconv/60. ;
+    if (units_input == "rad")
+      return toconv/M_PI*180.*60. ;
+  }
+  if (units_output == "arcsec")
+  {
+    if (units_input == "deg")
+      return toconv*60.*60. ;
+    if (units_input == "arcmin")
+      return toconv*60. ;
+    if (units_input == "rad")
+      return toconv/M_PI*180.*60.*60. ;
+  }
+  if (units_output == "rad")
+  {
+    if (units_input == "deg")
+      return toconv/180.*M_PI ;
+    if (units_input == "arcmin")
+      return toconv/60./180.*M_PI ;
+    if (units_input == "arsec")
+      return toconv/60./60./180.*M_PI ;
+  }
+
+  // comoving unit conversions
+  if (units_output == "Mpc" && units_input == "kpc")
+    return toconv/1000. ;
+  if (units_output == "kpc" && units_input == "Mpc")
+    return toconv*1000. ;
+
+  // from angular to comoving unit conversions
+  if (bin_in_R == true)
+    return toconv/conv_R2theta ;
+
+  if (!C::shut_up)
+  {
+    std::cerr << "\nERROR: unit conversion failed, please check whether units_input [" << units_input << "] and units_output [" << units_output << "] are in the list [arcsec, arcmin, deg, rad, Mpc, kpc, ?]" << std::endl ;
+    exit(1) ;
+  }
+
+  return 0 ;
 }
 
 

@@ -10,7 +10,7 @@
 
 
 //***// stacks (and averages) the shear fields behind all lens 
-std::vector<std::complex<double>> do_FFT_lenspos(std::vector<std::complex<double>>& gamma_g2l, const std::vector<std::complex<double>>& gamma12, const std::vector<double>& lens_density, const std::vector<double>& source_density, const int N_pix, const int N_fft)
+std::vector<std::complex<double>> do_FFT(std::vector<std::complex<double>>& gamma_g2l, const std::vector<std::complex<double>>& gamma12, const std::vector<double>& lens_density, const std::vector<double>& source_density, const int N_pix, const int N_fft)
 {
   //***// preparation for the FFT according to FFTW3 syntax
 
@@ -135,7 +135,7 @@ std::vector<std::complex<double>> do_FFT_lenspos(std::vector<std::complex<double
 }
 
 //***// calculates the tangential and cross shear as a function of distance from the center
-std::vector<std::complex<double>> calc_tshear_annulus(std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_g2l, const int pix_zp, const double field_size_fft, std::vector<double> annuli_radius, const int N_annuli, const std::string& bin_type, const int N_fft)
+std::vector<std::complex<double>> calc_tshear(std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_g2l, const int pix_zp, const double field_size_fft, std::vector<double> annuli_radius, const int N_annuli, const std::string& bin_type, const int N_fft)
 {
   // convert pixel positions to catalog units
   std::vector<Galaxy_Position> PixelPos(N_fft*N_fft) ;
@@ -145,6 +145,9 @@ std::vector<std::complex<double>> calc_tshear_annulus(std::vector<std::complex<d
     PixelPos[pix_x*N_fft +pix_y].pos[0] = 1.*pix_x *field_size_fft/(1.*N_fft) - field_size_fft/2. ;
     PixelPos[pix_x*N_fft +pix_y].pos[1] = 1.*pix_y *field_size_fft/(1.*N_fft) - field_size_fft/2. ;
   }
+
+  std::cout << PixelPos[0].pos[0] << std::endl ;
+  std::cout << PixelPos[0].pos[1] << std::endl ;
 
   // initialize container that collect all gamma_tx values in a given annuli and its number
   std::vector<std::complex<double>> gamma_sum(N_annuli) ;

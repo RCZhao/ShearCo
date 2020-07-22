@@ -18,7 +18,7 @@
 
 
 //***// assigns positions from lens galaxies and shear from source galaxies to the pixel grid
-void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_density, std::vector<std::complex<double>>& gamma12, double& number_of_lenses, double& number_of_sources, double& field_size, const int N_pix, const std::string& input_lens_file, const std::string& input_source_file, const std::vector<tmean_type> theta, const int N_annuli, const std::string output_data_dir) ;
+void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_density, std::vector<std::complex<double>>& gamma12, double& number_of_lenses, double& number_of_sources, double& field_size, const int N_pix, const std::string& input_lens_file, const std::string& input_source_file, const std::vector<tmean_type> theta, const int N_annuli, const std::string& units_output, const std::string output_data_dir) ;
 
 
 //***// selects random lenses (~70% of all pixels)

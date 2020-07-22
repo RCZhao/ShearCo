@@ -1,22 +1,29 @@
+### compulsory ###
 # foreground galaxy catalog file [string /mypath/myfile.filetype]
 # format should be [xpos   ypos  0   0   weight]
 input_lens_file     ./test/cat_lens.ascii
 # background galaxy catalog file [string /mypath/myfile.filetype]
 # format should be [xpos   ypos  shear1   shear2   weight]
 input_source_file   ./test/cat_source.ascii
+# inner radius in units of 'units_output' [double e.g., 0.1 or 2]
+theta_in            0.6
+# outer radius in units of 'units_output' [double e.g., 10 or 15.7]
+theta_out           17.5
+# number of bins [int e.g., 17 or 30]
+N_annuli            10
+
+### optional ###
 # output directory [string: /mypath/]
 output_data_dir     ./test/
 # number of pixel, field size is N_pix*N_pix [int e.g., 4096]
 N_pix               4096
-# inner radius in units of 'input coordinates' [double e.g., 0.1 or 2]
-theta_in            0.01
-# outer radius in units of 'output coordinates' [double e.g., 10 or 15.7]
-theta_out           0.2916666667
-# number of bins [int e.g., 17 or 30]
-N_annuli            10
 # logarithmic or linear binning [string: lin, log]
 bin_type            log
-# binning [bool: true, false]
-bin_in_R            false
-# conversion factor 'bin_in_R = true', units [cat units]/Mpc [double e.g., 0.03116]
-conv_R2theta        0.03
+# units of xpos/ypos in the input catalog [string: arcsec, arcmin, deg, rad, Mpc, kpc, ?]
+units_input         deg
+# units for bins of the output [string: arcsec, arcmin, deg, rad, Mpc, kpc, ?]
+units_output        arcmin
+
+### IFs ###
+# conversion factor from angular to comoving coordinates, [double e.g., 0.03116] in deg/Mpc
+conv_R2theta        0.03116

@@ -48,10 +48,11 @@ int main(int argc, char * const argv[])
 
   // changeable stuff by config
   std::string input_lens_file, input_source_file, output_data_dir, bin_type ;
+  std::string units_input, units_output ;
+  bool bin_in_R = false ;
   double theta_in = -1, theta_out = -1 ;
   double conv_R2theta = -1 ;
   int N_pix = -1, N_annuli = -1 ;
-  bool bin_in_R = false ;
   std::string config =  "config" ;
 
 
@@ -93,18 +94,10 @@ int main(int argc, char * const argv[])
   if (!C::shut_up)
     sayhello() ;
 
-  read_config_file(config, input_lens_file, input_source_file, output_data_dir, N_pix, theta_in, theta_out, N_annuli, bin_type, bin_in_R, conv_R2theta) ;
+  read_config_file(config, input_lens_file, input_source_file, theta_in, theta_out, N_annuli, output_data_dir, N_pix, bin_type, units_input, units_output, bin_in_R, conv_R2theta) ;
 
   if (!C::shut_up)
       std::cout << "finished configuring\nsetting-up annuli\r" << std::flush ;
-
-
-  // change from angular to comoving coordinates
-  if (bin_in_R == true)
-  {
-    theta_in  *= conv_R2theta ; //deg
-    theta_out *= conv_R2theta ; //deg
-  }
 
 
   // calculate binning for tangential shear measurements in catalog units
@@ -115,7 +108,7 @@ int main(int argc, char * const argv[])
   // calculate the mean theta in an angular bin
   // MAKE 'calc_thetatruemean'
   std::vector<tmean_type> thetamean(N_annuli) ;
-  thetamean = calc_thetamean(thetamean, annuli_radius, N_annuli, bin_in_R, conv_R2theta) ;
+  thetamean = calc_thetamean(thetamean, annuli_radius, N_annuli) ;
   
 
   if (!C::shut_up)
@@ -137,23 +130,25 @@ int main(int argc, char * const argv[])
 
 
   // change lens_density, number_of_lenses, source_density, gamma12, number_of_sources, field_size
-  gals2pos(lens_density, source_density, gamma12, number_of_lenses, number_of_sources, field_size, N_pix, input_lens_file, input_source_file, thetamean, N_annuli, output_data_dir) ;
+  gals2pos(lens_density, source_density, gamma12, number_of_lenses, number_of_sources, field_size, N_pix, input_lens_file, input_source_file, thetamean, N_annuli, units_output, output_data_dir) ;
 
   std::vector<double> lens_density_forLSS(N_pix*N_pix) ;
   lens_density_forLSS = lens2pos_forLSS(lens_density_forLSS, N_pix) ;
 
 
-  // FFT assumes periodic boundary conditions, so we zero-pad with the minimum number of pixel
-  double    field_size_fft ;
-  const int pix_zero_padding = zero_padding_size(theta_out, field_size, field_size_fft, N_pix) ;
-  const int N_fft = N_pix + 2*pix_zero_padding ;
-
   if (!C::shut_up)
   {
     std::cout << "finished reading in galaxy catalogs" << std::endl ;
-    std::cout << "\nreporting some values here:\nfield size: " << field_size << "[cat units]\nresolution: " << std::scientific << field_size/N_pix << "[cat units/pix]" << std::endl ;
+    std::cout << "\nreporting some values here:\nfield size: " << field_size << "[" << units_input << "]\nresolution: " << std::scientific << field_size/N_pix << "[" << units_input << "/pix]" << std::endl ;
     std::cout << "\ncalculating the 2D-average shear field\r" << std::flush ;
   }
+
+
+  // FFT assumes periodic boundary conditions, so we zero-pad with the minimum number of pixel
+  field_size = unit_conv(field_size, units_input, units_output, bin_in_R, conv_R2theta) ;
+  double    field_size_fft ;
+  const int pix_zero_padding = zero_padding_size(theta_out, field_size, field_size_fft, N_pix) ;
+  const int N_fft = N_pix + 2*pix_zero_padding ;
 
 
 
@@ -163,10 +158,10 @@ int main(int argc, char * const argv[])
 
   // calculate the 2D-averaged (Cartesian) shear field around lenses and random positions
   std::vector<std::complex<double>> gamma_g2l(N_fft*N_fft) ;
-  gamma_g2l = do_FFT_lenspos(gamma_g2l, gamma12, lens_density, source_density, N_pix, N_fft) ;
+  gamma_g2l = do_FFT(gamma_g2l, gamma12, lens_density, source_density, N_pix, N_fft) ;
 
   std::vector<std::complex<double>> gamma_lss(N_fft*N_fft) ;
-  gamma_lss = do_FFT_lenspos(gamma_lss, gamma12, lens_density_forLSS, source_density, N_pix, N_fft) ;
+  gamma_lss = do_FFT(gamma_lss, gamma12, lens_density_forLSS, source_density, N_pix, N_fft) ;
 
   if (!C::shut_up)
     std::cout << "calculated the 2D-average shear field\ncalculating the azimuthally-averaged tang. shear\r" << std::flush;
@@ -174,27 +169,21 @@ int main(int argc, char * const argv[])
 
   // calculate the azimuthally averaged, tangential/cross shear profile
   std::vector<std::complex<double>> gamma_R(N_annuli) ;
-  gamma_R = calc_tshear_annulus(gamma_R, gamma_g2l, pix_zero_padding, field_size_fft, annuli_radius, N_annuli, bin_type, N_fft) ;
+  gamma_R = calc_tshear(gamma_R, gamma_g2l, pix_zero_padding, field_size_fft, annuli_radius, N_annuli, bin_type, N_fft) ;
 
   std::vector<std::complex<double>> gamma_Rlss(N_annuli) ;
-  gamma_Rlss = calc_tshear_annulus(gamma_Rlss, gamma_lss, pix_zero_padding, field_size_fft, annuli_radius, N_annuli, bin_type, N_fft) ;
+  gamma_Rlss = calc_tshear(gamma_Rlss, gamma_lss, pix_zero_padding, field_size_fft, annuli_radius, N_annuli, bin_type, N_fft) ;
 
   if (!C::shut_up)
     std::cout << "calculated the azimuthally-averaged tangential shear" << std::endl ;
 
 
   // write output file with result
-  if(C::output2file)
-  {
-    if (!C::shut_up)
-      std::cout << "write output\r" << std::flush;
-    write_file_for_GammaR(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli, output_data_dir) ;
-    if (!C::shut_up)
-      std::cout << "wrote output\n" << std::endl ;
-  }
-  // or print result in terminal
-  else
-    print_result(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli) ;
+  if (!C::shut_up)
+    std::cout << "write output\r" << std::flush;
+  write_file_for_GammaR(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli, units_output, output_data_dir) ;
+  if (!C::shut_up)
+    std::cout << "wrote output\n" << std::endl ;
 
   if (!C::shut_up)
     std::cout << "\nAll done! :)\n" << std::endl ;
