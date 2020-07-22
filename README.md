@@ -129,7 +129,7 @@ The default file is "config". It has to contain the following entries. If you do
 
 <table style="width:100%">
   <tr>
-    <th colspan="4">IF bin_in_R = true:</th>
+    <th colspan="4">IF angular input -> comoving output:</th>
   </tr>
   <tr>
     <td>conv_R2theta</td>
