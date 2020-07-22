@@ -138,6 +138,7 @@ int main(int argc, char * const argv[])
 
   if (!C::shut_up)
   {
+    std::cout.precision(2) ;
     std::cout << "finished reading in galaxy catalogs" << std::endl ;
     std::cout << "\nreporting some values here:\nfield size: " << field_size << "[" << units_input << "]\nresolution: " << std::scientific << field_size/N_pix << "[" << units_input << "/pix]" << std::endl ;
     std::cout << "\ncalculating the 2D-average shear field\r" << std::flush ;

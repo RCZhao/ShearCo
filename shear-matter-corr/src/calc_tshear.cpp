@@ -146,9 +146,6 @@ std::vector<std::complex<double>> calc_tshear(std::vector<std::complex<double>>&
     PixelPos[pix_x*N_fft +pix_y].pos[1] = 1.*pix_y *field_size_fft/(1.*N_fft) - field_size_fft/2. ;
   }
 
-  std::cout << PixelPos[0].pos[0] << std::endl ;
-  std::cout << PixelPos[0].pos[1] << std::endl ;
-
   // initialize container that collect all gamma_tx values in a given annuli and its number
   std::vector<std::complex<double>> gamma_sum(N_annuli) ;
   std::vector<int> bin_counts(N_annuli,  0.) ;

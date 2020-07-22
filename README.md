@@ -35,9 +35,18 @@ Input catalogs:
 * the first line can but doesn't need to contain the number of objects (for long files it is recommended though)
 * comment lines are allowed with the usual specifiers [#, %, /, //, !]
 
+Output file:
+* (1) linear mean radius in a bin
+* (2) logarithmic mean radius in a bin
+* (3) tangential shear
+* (4) cross shear
+* (5) contribution to tangential shear that comes from the large-scale structure
+* (6) contribution to cross shear that comes from the large-scale structure
+
 Testing the code:
 * the folder `test` contains a lens and a source input catalog, the test config file and the test output file
 * run with `./bin/shearco -c test/test_config` and compare "tshear.ascii" and "test_tshear.ascii"
+* the last two columns should not be identical since a random seed is used to calculate the contribution of the large-scale structure (lss)
 
 
 ## Configuration file
