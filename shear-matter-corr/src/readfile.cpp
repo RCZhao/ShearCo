@@ -79,7 +79,7 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
       number_of_galaxies++ ;
 
       if (!C::shut_up)
-        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << number_of_galaxies << ", actual number of objects (lines): " << idx << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
 
       // jump back to line one
       file.clear() ;
@@ -116,7 +116,7 @@ void read_lens_file(double *&xpos, double *&ypos, double *&weight, int& number_o
   if (number_of_galaxies > idx && !C::shut_up)
   {
     if (!C::shut_up)
-        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
+        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the lens catalog than given in the first line of the file" << input_file << ", first line: " << number_of_galaxies << ", actual number of objects (lines): " << idx << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_lens_file< in >readfile.cpp<" << std::endl ;
 
     number_of_galaxies = idx ;
 
@@ -206,7 +206,7 @@ void read_source_file(double *&xpos, double *&ypos, double *&shear1, double *&sh
       number_of_galaxies++ ;
 
       if (!C::shut_up)
-        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_source_file< in >readfile.cpp<" << std::endl ;
+        std::cerr << "\nWARNING: apparantly there are more objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << number_of_galaxies << ", actual number of objects (lines): " << idx << ", this will not affect the calculations done in this routine, but the reading will take considerably longer :..( \nfunction >read_source_file< in >readfile.cpp<" << std::endl ;
 
       // jump back to line one
       file.clear() ;
@@ -247,7 +247,7 @@ void read_source_file(double *&xpos, double *&ypos, double *&shear1, double *&sh
   if (number_of_galaxies > idx && !C::shut_up)
   {
     if (!C::shut_up)
-        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << idx << ", actual number of objects (lines): " << number_of_galaxies << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_lsource_file< in >readfile.cpp<" << std::endl ;
+        std::cerr << "\nWARNING: apparantly there are less objects (lines) in the source catalog than given in the first line of the file" << input_file << ", first line: " << number_of_galaxies << ", actual number of objects (lines): " << idx << ", this can potentially cause memory problems, but will not affect the calculations done in this routine  \nfunction >read_source_file< in >readfile.cpp<" << std::endl ;
 
     number_of_galaxies = idx ;
 

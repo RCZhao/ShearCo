@@ -12,7 +12,7 @@ Second-order correlation functions with fast-Fourier transforms in C++
 * [Contact](#contact)
 
 ## General info
-_ShearCo_ is a C++-based code that calculates weak lensing two-point correlation functions efficiently. Currently, only shear-matter correlation functions (galaxy-galaxy lensing signals) can be computed which will be expanded in the near future. It is suitable for large data sets and independent of the survey footprint. This code estimates and/or mitigates weak lensing magnification effects. A detailed account is given in the [@PhD thesis](.) (not published yet) and an abridged version can be found in the appendix of [@Unruh2020](https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..96U/abstract).
+_ShearCo_ is a C++-based code that calculates weak lensing two-point correlation functions efficiently. Currently, only shear-matter and convergence-matter correlation functions (galaxy-galaxy lensing signals) can be computed which will be expanded in the near future. It is suitable for large data sets and independent of the survey footprint. This code estimates and/or mitigates weak lensing magnification effects. A detailed account is given in the [@PhD thesis](.) (not published yet) and an abridged version can be found in the appendix of [@Unruh2020](https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..96U/abstract).
 
 
 ## Install and run
@@ -27,11 +27,13 @@ Install:
 Run:
 * run as `./bin/shearco`
 * option `-c your_config_file` lets you specify a configuration file
+* option `-k`: for calculating the convergence-matter correlation function (or any ther scalar quantity)
 * option `-o`: no output file is generated, the result will be displayed in the terminal
 * option `-q`: shuts up _all_ communication from the running code (including progress, warnings and errors) except missing config files 
 
 Input catalogs:
 * the form should be [xpos ypos shear1 shear2 weight], where the shear is ignored for lens galaxies
+* for source catalogs that contain the convergene [xpos ypos kappa 0 weight]
 * the first line can but doesn't need to contain the number of objects (for long files it is recommended though)
 * comment lines are allowed with the usual specifiers [#, %, /, //, !]
 
@@ -39,9 +41,9 @@ Output file:
 * (header) weighted number of lenses and sources
 * (1) linear mean radius in a bin
 * (2) logarithmic mean radius in a bin
-* (3) tangential shear
+* (3) tangential shear / convergence
 * (4) cross shear
-* (5) contribution to tangential shear that comes from the large-scale structure
+* (5) contribution to tangential shear / convergence that comes from the large-scale structure
 * (6) contribution to cross shear that comes from the large-scale structure
 
 Testing the code:
@@ -152,6 +154,7 @@ The default file is "config". It has to contain the following entries. If you do
 
 ## Features
 * calculates the galaxy-shear correlation functions (galaxy-galaxy lensing signal)
+* calculates galaxy-[any scalar quantity, like convergence, temperature, ...] correlation functions
 * independent of the number of objects
 * works with masks
 * works on any survey footprint
@@ -159,7 +162,7 @@ The default file is "config". It has to contain the following entries. If you do
 
 To-do list:
 * magnification effects in galaxy-galaxy lensing (coding complete)
-* implement convergence as an alternative to shear (coding complete)
+* <s>implement convergence as an alternative to shear</s>
 * calculation of shear-shear correlations
 * different input formats like .bin, .fits
 * optimize to some simulations I already used (Millennium, SLICS)

@@ -18,6 +18,7 @@ void gals2pos(std::vector<double>& lens_density, std::vector<double>& source_den
     gamma12[pix] = {0. , 0.} ;
   }
 
+
   // *** //
   // extract necessary information about lenses
   // *** //

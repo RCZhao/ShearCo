@@ -10,31 +10,49 @@
 
 
 // //***// write an output file for the tangential shear gamma(R) as a function of distance from the (stacked) lenses
-void write_file_for_GammaR(const std::vector<tmean_type>& theta, const std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_Rlss, const int numlens, const int numsource, const int N_annuli, const std::string& units_output, const std::string& output_data_dir)
+void write_output_file(const std::vector<tmean_type>& theta, const std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_Rlss, const int numlens, const int numsource, const int N_annuli, const std::string& units_output, const std::string& output_data_dir)
 {
   // redirect to terminal
   if(!C::output2file)
     print_result(theta, gamma_R, gamma_Rlss, numlens, numsource, N_annuli, units_output) ;
 
+  std::string Output = output_data_dir ;
   // create file name in output directory
-  const std::string Output = output_data_dir + "tshear.ascii" ;
+  if (!C::convergence)
+    Output += "tshear.ascii" ;
+  else 
+    Output += "convergence.ascii" ;
 
   // open file for writing, discard any previous content
   std::ofstream OutputFile(Output.c_str(), std::ios::out | std::ios::trunc) ;
 
   // create header
   OutputFile << "## num of lenses\t" << numlens << "\t, num of sources\t" << numsource <<  "\n"  ;
-  OutputFile << "# R_lin [" << units_output << "]\tR_log [" << units_output << "]\t\tgammat\t\t\tgammax\t\t\tgammatlss\t\tgammaxlss\n" ;
+  OutputFile << "# R_lin [" << units_output << "]\tR_log [" << units_output << "]\t\t" ;
+
+  if (!C::convergence)
+    OutputFile << "gammat\t\t\tgammax\t\t\tgammatlss\t\tgammaxlss\n" ;
+  else 
+    OutputFile << "kappa\t\t\tkappalss\n" ;
+  
 
   // for each annulus calculate radius of annulus from lens and write plus correspondung gamma(radius) value into file
   for(int ann = 0; ann < N_annuli ; ann++)
-    // write to output file radius and gamma(radius) in arcmin
-    OutputFile << std::fixed << theta[ann].mean[0] << "\t\t"  << theta[ann].mean[1] << "\t\t" << std::scientific << std::real(gamma_R[ann]) <<  "\t" << std::imag(gamma_R[ann]) << "\t" << std::real(gamma_Rlss[ann]) <<  "\t" << std::imag(gamma_Rlss[ann]) << "\n"  ;
+  {
+    OutputFile << std::fixed << theta[ann].mean[0] << "\t\t"  << theta[ann].mean[1] << "\t\t" ;
+    // write to output file radius and gamma(radius)
+    if (!C::convergence)
+      OutputFile << std::scientific << std::real(gamma_R[ann]) <<  "\t" << std::imag(gamma_R[ann]) << "\t" << std::real(gamma_Rlss[ann]) <<  "\t" << std::imag(gamma_Rlss[ann]) << "\n"  ;
+    // write to output file radius and kappa(radius)
+    else 
+      OutputFile << std::scientific << std::real(gamma_R[ann]) << "\t" << std::real(gamma_Rlss[ann]) << "\n"  ;
+  }
+    
 
   // check if writing succeeded
   if(!OutputFile && !C::shut_up)
   {
-    std::cerr << "\nWARNING: could not write data to file: " << Output << " please check whether the output directory exists\nfunction >write_file_for_GammaR< in >writefile.cpp<\n\ninstead: print result in terminal:" << std::endl;
+    std::cerr << "\nWARNING: could not write data to file: " << Output << " please check whether the output directory exists\nfunction >write_output_file< in >writefile.cpp<\n\ninstead: print result in terminal:" << std::endl;
 
     print_result(theta, gamma_R, gamma_Rlss, numlens, numsource, N_annuli, units_output) ;
   }
@@ -51,19 +69,34 @@ void write_empty_output_file(const std::vector<tmean_type> theta, const int N_an
   if (!C::output2file)
     print_empty_result(theta, N_annuli, units_output) ;
 
+  std::string Output = output_data_dir ;
   // create file name in output directory
-  const std::string Output = output_data_dir + "tshear.ascii" ;
+  if (!C::convergence)
+    Output += "tshear.ascii" ;
+  else 
+    Output += "convergence.ascii" ;
 
   // open file for writing, discard any previous content
   std::ofstream OutputFile(Output.c_str(), std::ios::out | std::ios::trunc) ;
 
   // create header
   OutputFile << "## num of lenses \t-1\t, num of sources\t-1\n"  ;
-  OutputFile << "# R_lin [" << units_output << "]\tR_log [" << units_output << "]\t\tgammat\tgammax\tgammatlss\tgammaxlss\n" ;
+  OutputFile << "# R_lin [" << units_output << "]\tR_log [" << units_output << "]\t\t" ;
+
+  if (!C::convergence)
+    OutputFile << "gammat\t\t\tgammax\t\t\tgammatlss\t\tgammaxlss\n" ;
+  else 
+    OutputFile << "kappa\t\t\tkappalss\n" ;
 
   // write empty file
   for(int ann = 0; ann < N_annuli ; ann++)
-    OutputFile << std::fixed << theta[ann].mean[0] << "\t\t" << theta[ann].mean[1] << "\t\t0\t\t0\t\t0\t\t\t0\n" ;
+  {
+    OutputFile << std::fixed << theta[ann].mean[0] << "\t\t"  << theta[ann].mean[1] << "\t\t" ;
+    if (!C::convergence)
+      OutputFile << "0\t0\t0\t0\n"  ;
+    else 
+      OutputFile << "0\t0\t0\n"  ;
+  }
 
   // check if writing succeeded
   if(!OutputFile && !C::shut_up)
@@ -79,12 +112,21 @@ void print_result(const std::vector<tmean_type>& theta, const std::vector<std::c
 {
   std::cout << "\n\nweighted number of lenses:  " << numlens << "\nweighted number of sources: " << numsource << std::endl ;
 
-  std::cout << "R_lin [" << units_output << "]\tR_log [" << units_output << "]\t <gamma_t> \t <gamma_x>" << std::endl ;
+  std::cout << "R_lin [" << units_output << "]\tR_log [" << units_output << "]\t " ;
+  if (!C::convergence)
+    std::cout << "<gamma_t> \t <gamma_x>" << std::endl ;
+  else 
+    std::cout << "<kappa>" << std::endl ;
+  
 
   for (int ann = 0; ann < N_annuli; ++ann)
   {
     std::cout.precision(4) ;
-    std::cout << std::defaultfloat << theta[ann].mean[0] << "\t\t" << theta[ann].mean[1] << "\t\t" << std::scientific << std::real(gamma_R[ann]) - std::real(gamma_Rlss[ann]) << " \t " << std::imag(gamma_R[ann]) - std::imag(gamma_Rlss[ann]) << std::endl;
+    std::cout << std::defaultfloat << theta[ann].mean[0] << "\t\t" << theta[ann].mean[1] << "\t\t" ;
+    if (!C::convergence)
+      std::cout << std::scientific << std::real(gamma_R[ann]) - std::real(gamma_Rlss[ann]) << " \t " << std::imag(gamma_R[ann]) - std::imag(gamma_Rlss[ann]) << std::endl;
+    else 
+      std::cout << std::scientific << std::real(gamma_R[ann]) - std::real(gamma_Rlss[ann]) << std::endl;
   }
   std::cout << std::endl ;
 }
@@ -93,12 +135,20 @@ void print_result(const std::vector<tmean_type>& theta, const std::vector<std::c
 //***// output result to terminal with zeros to let people know
 void print_empty_result(const std::vector<tmean_type>& theta, const int N_annuli, const std::string& units_output)
 {
-  std::cout << "\nR_lin [" << units_output << "]\tR_log [" << units_output << "]\t <gamma_t> \t <gamma_x>" << std::endl ;
+  std::cout << "R_lin [" << units_output << "]\tR_log [" << units_output << "]\t " ;
+  if (!C::convergence)
+    std::cout << "<gamma_t> \t <gamma_x>" << std::endl ;
+  else 
+    std::cout << "<kappa>" << std::endl ;
 
   for (int ann = 0; ann < N_annuli; ++ann)
   {
     std::cout.precision(4) ;
-    std::cout << theta[ann].mean[0] << "\t\t" << theta[ann].mean[1] << "\t\t 0 \t\t 0"<< std::endl;
+    std::cout << std::defaultfloat << theta[ann].mean[0] << "\t\t" << theta[ann].mean[1] << "\t\t" ;
+    if (!C::convergence)
+      std::cout << " 0 \t\t 0" << std::endl;
+    else 
+      std::cout << " 0" << std::endl;
   }
   std::cout << std::endl ;
 }
@@ -112,7 +162,10 @@ void sayhello()
   std::cout << '=' << std::endl;
   std::cout.fill(' ');
 
-  std::cout << "SHEARCO\ncalculating galaxy-shear correlation functions, let's go\n" ;
+  if (!C::convergence)
+    std::cout << "SHEARCO\ncalculating galaxy-shear correlation functions, let's go\n" ;
+  else
+    std::cout << "SHEARCO\ncalculating galaxy-convergence correlation functions, let's go\n" ;
 
   std::cout.width(58);
   std::cout.fill('=');
