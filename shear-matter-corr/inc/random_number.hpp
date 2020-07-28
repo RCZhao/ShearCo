@@ -21,7 +21,7 @@
 // // create a random number modulus to an input number
 // int GetRand(const unsigned int modulo) ;
 
-void            seed(const int thread_id)                               ;
+void            init_random_generator(const int thread_id)              ;
 double          unif_real_Rand(const double a, const double b)          ;
 unsigned long   unif_int_Rand(const unsigned long n)                    ;
 double          gaussian_Rand(const double mean, const double sigma)    ;

@@ -9,8 +9,16 @@
 #include "random_number.hpp"
 
 //get a seed for a random number
-void seed(const int thread_id)
+void init_random_generator(const int thread_id)
 {
+    /* 
+    The variable 'thread_id' is for initializing the random generator when running the code
+    parallelly on multi cpus/threads. One can give different value of 'thread_id' for different 
+    cup/thread to ensure that the random seeds are different. However, the codes running on different 
+    cpus/threads are not really starts simultaneously, and the clock has high enough resolution to
+    give different seed for each code. Therefore, using the same 'thread_id' value, e.g. 1, to initialize
+    the random generator should be fine.
+    */
     unsigned long time_since_epoch = RG::myclock::now().time_since_epoch().count();
     unsigned long rand_seed = (time_since_epoch*thread_id)%1000000000000000;
     RG::random_generator.seed(rand_seed);

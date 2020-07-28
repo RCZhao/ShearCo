@@ -65,7 +65,7 @@ int main(int argc, char * const argv[])
   std::string config =  "config" ;
 
   // initialize the random generator
-  seed(1);
+  init_random_generator(1);
 
 
   // optional different name for config file
