@@ -222,7 +222,7 @@ std::vector<double> lens2pos_forLSS(std::vector<double>& lens_density, const int
   // put .7*N_pix*N_pix lenses randomly on pixel, this will actually fill ~50% of all pixels 
   double N_rand = N_pix*N_pix/sqrt(2) ;
   for (int rand = 0 ; rand < N_rand ; ++rand)
-    lens_density[GetRand(N_pix*N_pix)] += 1./N_rand ;
+    lens_density[unif_int_Rand(N_pix*N_pix)] += 1./N_rand ;
 
   return lens_density ;
 }
