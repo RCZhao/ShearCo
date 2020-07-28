@@ -29,6 +29,10 @@ namespace C {
   bool output2file = true ;
   // option to mute the programm (incl error messages)
   bool shut_up = false ;
+
+  // calculate convergence-matter correlation function instead of shear-matter
+  // needs the convergence as an inout catalogue
+  bool convergence = false ;
 }
 
 // include subroutines
@@ -65,10 +69,11 @@ int main(int argc, char * const argv[])
     {"config", required_argument, 0, 'c'} ,
     {"mute_mode", no_argument, 0, 'q'} ,    //q like quiet
     {"no_output", no_argument, 0, 'o'} ,    //o like output
+    {"convergence", no_argument, 0, 'k'} ,  //k like kappa
     {0, 0, 0, 0}
   };
 
-  while ((arg = getopt_long(argc, argv, "c:qo", longopts, NULL)) != -1)
+  while ((arg = getopt_long(argc, argv, "c:qok", longopts, NULL)) != -1)
   {
     switch (arg)
     {
@@ -83,10 +88,14 @@ int main(int argc, char * const argv[])
       case 'o': /* --no_output */
         C::output2file = false ;
         break ;
+
+      case 'k': /* --convergence */
+        C::convergence = true ;
+        break ;
                 
       case '?':
       default:    /* invalid option */
-        std::cout << "./programm -q -o -c config\n q: program is mute (incl error messages) \n o: toggle outputfile off\n c: name of your config file\n treat yourself to a cookie" <<  std::endl ;
+        std::cout << "./programm -q -o -c config -k\n q: program is mute (incl error messages) \n o: toggle outputfile off\n c: name of your config file\n k: input catalogues contain convergence instead of shear\n treat yourself to a cookie" <<  std::endl ;
         return(1);
     }
   }
@@ -182,7 +191,7 @@ int main(int argc, char * const argv[])
   // write output file with result
   if (!C::shut_up)
     std::cout << "write output\r" << std::flush;
-  write_file_for_GammaR(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli, units_output, output_data_dir) ;
+  write_output_file(thetamean, gamma_R, gamma_Rlss, number_of_lenses, number_of_sources, N_annuli, units_output, output_data_dir) ;
   if (!C::shut_up)
     std::cout << "wrote output\n" << std::endl ;
 

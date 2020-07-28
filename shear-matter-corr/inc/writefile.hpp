@@ -18,7 +18,7 @@
 
 
 //***// write an output file for the tangential shear gamma(R) as a function of distance from the (stacked) lenses
-void write_file_for_GammaR(const std::vector<tmean_type>& theta, const std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_Rlss, const int numlens, const int numsource, const int N_annuli, const std::string& units_output, const std::string& output_data_dir) ;
+void write_output_file(const std::vector<tmean_type>& theta, const std::vector<std::complex<double>>& gamma_R, const std::vector<std::complex<double>>& gamma_Rlss, const int numlens, const int numsource, const int N_annuli, const std::string& units_output, const std::string& output_data_dir) ;
 
 //***// write an output file filled with zeros to keep consistency
 void write_empty_output_file(const std::vector<tmean_type> theta, const int N_annuli, const std::string& units_output, const std::string output_data_dir) ;

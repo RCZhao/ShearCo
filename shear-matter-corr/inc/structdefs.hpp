@@ -36,6 +36,10 @@ namespace C
   extern bool output2file ;
   // option to mute the programm (incl error messages)
   extern bool shut_up ;
+
+  // calculate convergence-matter correlation function instead of shear-matter
+  // needs the convergence as an inout catalogue
+  extern bool convergence ;
 }
 
 
