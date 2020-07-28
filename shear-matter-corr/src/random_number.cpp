@@ -37,3 +37,22 @@ int GetRand(const unsigned int modulo)
     
     return randnum;
 }
+
+
+double unif_real_Rand(const double a, const double b)
+{
+    std::uniform_real_distribution<double> randU(a, b);
+    return randU(random_generator);
+}
+
+int unif_int_Rand(const unsigned int n)
+{
+    std::uniform_int_distribution<int> randU_int(0, n);
+    return randU_int(random_generator);
+}
+
+double gaussian_Rand(const double mean, const double sigma)
+{
+    std::normal_distribution<double> gaussian(mean, sigma);
+    return gaussian(random_generator);
+}
