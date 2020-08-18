@@ -13,7 +13,8 @@
 #include <complex>
 
 #include <vector>
-
+#include <random>
+#include <chrono>
 
 
 // a 2-dim, float vector to hold information on galaxy position
@@ -42,6 +43,12 @@ namespace C
   extern bool convergence ;
 }
 
+// the name space for the random generaotr
+namespace RG
+{
+  extern std::mt19937 random_generator;
+  typedef std::chrono::high_resolution_clock myclock;
+}
 
 // convert numbers to strings
 namespace SH

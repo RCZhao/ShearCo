@@ -35,6 +35,10 @@ namespace C {
   bool convergence = false ;
 }
 
+namespace RG {
+  std::mt19937 random_generator;
+}
+
 // include subroutines
 #include "config.hpp"
 #include "map_and_annuli.hpp"
@@ -42,6 +46,7 @@ namespace C {
 #include "calc_tshear.hpp"
 #include "readfile.hpp"
 #include "writefile.hpp"
+#include "random_number.hpp"
 
 
 int main(int argc, char * const argv[])
@@ -58,6 +63,9 @@ int main(int argc, char * const argv[])
   double conv_R2theta = -1 ;
   int N_pix = -1, N_annuli = -1 ;
   std::string config =  "config" ;
+
+  // initialize the random generator
+  init_random_generator(1);
 
 
   // optional different name for config file
